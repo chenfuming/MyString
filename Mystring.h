@@ -33,6 +33,10 @@ namespace cfm
 		friend bool operator >= (const MyString &, const MyString &);
 		friend std::ostream &operator << (std::ostream &, const MyString &);
 		friend std::istream &operator >> (std::istream &, MyString &);
+		/*字符串操作函数*/
+		MyString &append(const MyString &); //连接
+		MyString &insert(const size_t, const MyString &); //插入
+		MyString &erase(const size_t, const size_t); //删除
 	private:
 		size_t m_strLen;
 		char *m_str;

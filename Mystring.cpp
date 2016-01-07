@@ -1,5 +1,6 @@
 #include "Mystring.h"
 #include <cstring>
+#include <cassert>
 #include <iostream>
 
 namespace cfm
@@ -161,6 +162,80 @@ std::istream &operator >> (std::istream &is, MyString &str)
 	
 	return is;
 }
-		
+
+/*字符串各类操作*/
+
+/*连接*/
+MyString &MyString::append(const MyString &str)
+{
+	char *oldStr = m_str;
+	
+	m_strLen += str.m_strLen;
+	m_str = new char[m_strLen + 1];
+	strcpy(m_str, oldStr);
+	strcat(m_str, str.m_str);
+	
+	delete []oldStr;
+
+	return *this;
+}
+
+/*插入,在下标为pos的字符前面插入str*/
+MyString &MyString::insert(const size_t pos, const MyString &str)
+{
+	assert(pos < m_strLen);
+
+	int i = 0;
+	char *oldStr = m_str;
+	m_strLen += str.m_strLen;
+	m_str = new char[m_strLen + 1];
+
+	for (i = 0; i < pos; i++)
+	{
+		m_str[i] = oldStr[i];
+	}
+
+	for (i = pos; i < pos+str.m_strLen; i++)
+	{
+		m_str[i] = str.m_str[i - pos];
+	}
+
+	for (i = pos+str.m_strLen; i < m_strLen+1; i++)
+	{
+		m_str[i] = oldStr[i - str.m_strLen];
+	}
+
+	m_str[m_strLen] = '\0';
+	delete []oldStr;
+
+	return *this;
+}
+
+/*删除，从下标为pos开始删除len个字符*/
+MyString &MyString::erase(const size_t pos, const size_t len)
+{
+	assert(pos + len <= m_strLen);
+
+	int i = 0;
+	char *oldStr = m_str;
+	m_strLen -= len;
+	m_str = new char[m_strLen + 1];
+
+	for (i = 0; i < pos; i++)
+	{
+		m_str[i] = oldStr[i];
+	}
+	
+	for (i = pos; oldStr[i+len] != '\0'; i++)
+	{
+		m_str[i] = oldStr[i+len];
+	}
+
+	m_str[m_strLen] = '\0';
+	delete []oldStr;
+
+	return *this;
+}
+
 }/*end namespace cfm*/
 
