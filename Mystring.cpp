@@ -165,6 +165,26 @@ std::istream &operator >> (std::istream &is, MyString &str)
 
 /*字符串各类操作*/
 
+/*返回下标为pos，长度为len的子串*/
+MyString MyString::substr(const size_t pos, const size_t len) const
+{
+	assert(pos + len <= m_strLen);
+
+	MyString temp;
+
+	temp.m_strLen = len;
+	temp.m_str = new char[m_strLen + 1];
+
+	for (int i = 0; i < m_strLen; i++)
+	{
+		temp.m_str[i] = m_str[pos + i];
+	}
+
+	temp.m_str[m_strLen] = '\0';
+
+	return temp;
+}
+
 /*连接*/
 MyString &MyString::append(const MyString &str)
 {
@@ -235,6 +255,48 @@ MyString &MyString::erase(const size_t pos, const size_t len)
 	delete []oldStr;
 
 	return *this;
+}
+
+/*查找，从下标为pos开始查找字符c在该字符串中的位置*/
+size_t MyString::find(const char c, const size_t pos) const 
+{
+	assert(pos <= m_strLen);
+
+	for (int i = pos; m_str[i] != '\0'; i++)
+	{
+		if (c == m_str[i])
+		{
+			return i;
+		}
+	}
+
+	return npos;
+}
+
+/*查找，从下标为pos开始查找字符串str在该字符串中的位置*/
+size_t MyString::find(const MyString &str, const size_t pos) const 
+{
+	assert(pos <= m_strLen);
+
+	char *p = strstr(m_str + pos, str.m_str);
+
+	if (p != NULL)
+	{
+		return p - m_str;
+	}
+	else
+	{
+		return npos;
+	}
+}
+
+/*替换，用字符串str替换从下标pos开始长度为len的一截*/
+MyString &MyString::replace(const size_t pos, const size_t len, const MyString &str)
+{
+	assert(pos + len <= m_strLen);
+
+	this->erase(pos, len);
+	this->insert(pos, str);
 }
 
 }/*end namespace cfm*/

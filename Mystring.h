@@ -34,9 +34,17 @@ namespace cfm
 		friend std::ostream &operator << (std::ostream &, const MyString &);
 		friend std::istream &operator >> (std::istream &, MyString &);
 		/*×Ö·û´®²Ù×÷º¯Êý*/
+		MyString substr(const size_t, const size_t) const; //·µ»Ø×Ó´®
 		MyString &append(const MyString &); //Á¬½Ó
 		MyString &insert(const size_t, const MyString &); //²åÈë
 		MyString &erase(const size_t, const size_t); //É¾³ý
+		size_t find(const char, const size_t) const; //²éÕÒ×Ö·û
+		size_t find(const MyString &, const size_t) const; //²éÕÒ×Ö·û´®
+		MyString &replace(const size_t, const size_t, const MyString &);//Ìæ»»
+		
+	public:
+		static const size_t npos = -1;		
+		
 	private:
 		size_t m_strLen;
 		char *m_str;
